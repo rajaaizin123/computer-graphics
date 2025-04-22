@@ -1,14 +1,20 @@
+/***
+ * Raja Aizin Nofrizivaldy    2301020027
+ * Hermawan                   2301020025
+ * Fauzan Aldi                2301020022
+***/
+
 #include <windows.h>
 #include <stdio.h>
 #include <string.h>
 
 #define TINGGI 720
 #define LEBAR 1100
-#define GRID 20 // 20x20 pixel
+#define GRID 20 // 60x20 pixel
 #define TENGAH_BOX 50
 
 // disini data
-float data[4][60];
+float data[4][53];
 
 typedef struct BoxPlot{
     float *data;
@@ -168,11 +174,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg,
 
 
             int x = 100;
-            //  for (int i = 0; i < 45; i++){
-            //      MoveToEx(hdc, x, 20, NULL);
-            //      LineTo(hdc, x, 620);
-            //      x += GRID;
-            //  }
+            //   for (int i = 0; i < 45; i++){
+            //       MoveToEx(hdc, x, 20, NULL);
+            //       LineTo(hdc, x, 620);
+            //        x += 3 * GRID;
+            //    }
 
             int y = 20;
             //  for (int i = 0; i < 30; i++){
@@ -181,12 +187,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg,
             //      y += GRID;
             //  }
 
-            // int y_axis = 4 * GRID;
+            // int y_axis = GRID;
             // for (int i = 0; i < 9; i++){
-            //     MoveToEx(hdc, 100, y_axis, NULL);
-            //     LineTo(hdc, 1000, y_axis);
+            // MoveToEx(hdc, 100, y_axis, NULL);
+            //      LineTo(hdc, 1000, y_axis);
 
-            //     y_axis += 3 * GRID;
+            //      y_axis += 3 * GRID;
             // }
 
             // angka pada garis y
@@ -219,6 +225,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg,
                 drawBoxPlot(hdc, &data_box[i], geser_grafik, (wchar_t *)label[i]);
 
                 geser_grafik += 160;
+
+                // cek data
+                printf("\nData ke-%d\n", i+1);
+                printf("Q1: %.2f\n", data_box[i].Q1);
+                printf("Q2: %.2f\n", data_box[i].Q2);
+                printf("Q3: %.2f\n", data_box[i].Q3);
+                printf("maksimum: %.2f\n", data_box[i].maksimum);
+                printf("minimum: %.2f\n", data_box[i].minimum);
+                printf("outlier: ");
+                for (int j = 0; j < data_box[i].jmlh_outlier; j++){
+                    printf("%.2f ", data_box[i].outlier[j]);
+                }
+                printf("\n");
             }
 
             //  printf("[");
@@ -334,12 +353,7 @@ void drawBoxPlot(HDC hdc, BoxPlot *data_plot, int geser, const wchar_t *label){
         float maks = data_plot->maksimum;
         float *outlier = data_plot->outlier;
 
-        // printf("Q1: %.2f\n", Q1);
-        // printf("Q2: %.2f\n", Q2);
-        // printf("Q3: %.2f\n", Q3);
-        // printf("min: %.2f\n", min);
-        // printf("maks: %.2f\n", maks);
-
+        // kotak (box)
         Rectangle(hdc, 160 + geser, titik_0 - (Q1 * pixel_dimensi), 260 + geser, titik_0 - (Q3 * pixel_dimensi));
         MoveToEx(hdc, 160 + geser, titik_0 - (Q2 * pixel_dimensi), NULL);
         LineTo(hdc, 260 + geser, titik_0 - (Q2 * pixel_dimensi));
